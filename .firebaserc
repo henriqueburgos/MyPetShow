@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "mypetshow"
+  },
+  "targets": {
+    "mypetshow": {
+      "hosting": {
+        "MyPetShow": [
+          "mypetshow"
+        ]
+      }
+    }
+  }
+}
