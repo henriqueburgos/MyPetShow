@@ -2,31 +2,43 @@
 
     <mat-tab-group mat-align-tabs="center">
       <mat-tab label="Login">   <div class="container cadastro">
-        <div class="login scale-up-center  bg">
+        <div class="login scale-up-center  bg"  >
           <h2>Login</h2>
           <form [formGroup]="loginForm" class="form animate__bounce">
             
-            <div class="input">
+            <div class="input" *ngIf="!block" >
               <mat-form-field class="form-mat" appearance="outline">
                 <mat-label>Email</mat-label>
-                <input
+                <input 
                   type="email"
                   matInput
                   formControlName="email"
                   placeholder="Ex. email@example.com"
                 />
+               
+                
                 <mat-error
                   *ngIf="
-                    cadastroForm.get('email')?.errors &&
-                    cadastroForm.get('email')?.touched
+                    loginForm.get('email')?.errors &&
+                    loginForm.get('email')?.touched
                   "
                 >
                   Email invalido
                 </mat-error>
               </mat-form-field>
             </div>
+            <div class="input" *ngIf="block" >
+              <mat-form-field class="form-mat" appearance="outline">
+                <mat-label>Email</mat-label>
+               
+                  
+                  <input matInput disabled value="Bloqueado">
+            
+
+              </mat-form-field>
+            </div>
       
-            <div  class="input">
+            <div  class="input" *ngIf="!block">
                    <mat-form-field  class="form-mat"  appearance="outline">
                   <mat-label>Senha</mat-label>
                   <input
@@ -36,24 +48,43 @@
                     placeholder="Minimo de 8 caracteres"
                   />
              
-                  <mat-error *ngIf="cadastroForm.get('senha')?.errors?.['minlength']"
-                    >caracteres {{ cadastroForm.get("senha")?.value.length }} /
+                  <mat-error *ngIf="loginForm.get('senha')?.errors?.['minlength']"
+                    >caracteres {{ loginForm.get("senha")?.value.length }} /
                     8</mat-error
                   >
                 </mat-form-field>
           
               </div>
+              <div class="input" *ngIf="block" >
+                <mat-form-field class="form-mat" appearance="outline">
+                  <mat-label>senha</mat-label>
+                 
+                    
+                    <input matInput disabled value="Bloqueado">
+              
+  
+                </mat-form-field>
+              </div>
           </form>
           <div class="botoesLogin">
             <div class="botoesLogin">
-              <button
+              <button *ngIf="errorPassword<=3 && !block ;else travado"
                 [disabled]="loginForm.invalid"
-                (click)="onSubmit()"
+                (click)="login()"
                 type="submit"
                 class="btn btn-primary"
               >
                Login
               </button>
+              <ng-template #travado>
+                <button                
+                (click)="recuperar()"
+                type=""
+                class="btn btn-warning"
+              >
+               Recuperar Senha
+              </button>
+              </ng-template>
             </div>
             <div class="botoesLogin">
              <button
@@ -83,6 +114,8 @@
                   id="nome"
                   placeholder="seu nome"
                 />
+                <mat-icon matSuffix *ngIf="cadastroForm.get('nome')?.valid" class="valid">task_alt</mat-icon>
+
                 <mat-error
                   *ngIf="
                     cadastroForm.get('nome')?.errors &&
@@ -102,6 +135,8 @@
                   formControlName="email"
                   placeholder="Ex. email@example.com"
                 />
+                <mat-icon matSuffix *ngIf="cadastroForm.get('email')?.valid" class="valid">task_alt</mat-icon>
+
                 <mat-error
                   *ngIf="
                     cadastroForm.get('email')?.errors &&
@@ -115,15 +150,17 @@
       
       
             <div  class="input">
-                   <mat-form-field  class="form-mat"  appearance="outline">
+                   <mat-form-field  class="form-mat"   appearance="outline">
                   <mat-label>Senha</mat-label>
                   <input
-                    type="password"
+                                    type="password"
                     matInput
                     formControlName="senha"
                     placeholder="Minimo de 8 caracteres"
                   />
-             
+                  <mat-icon matSuffix *ngIf="cadastroForm.get('senha')?.valid" class="valid">task_alt</mat-icon>
+                  <mat-error *ngIf="cadastroForm.get('senha')?.touched && cadastroForm.get('senha')?.errors?.['required']"
+                  >A senha é obrigatoria</mat-error>
                   <mat-error *ngIf="cadastroForm.get('senha')?.errors?.['minlength']"
                     >caracteres {{ cadastroForm.get("senha")?.value.length }} /
                     8</mat-error
@@ -143,9 +180,11 @@
                 />
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle
-                  matSuffix
+                  matPrefix
                   [for]="picker"
                 ></mat-datepicker-toggle>
+                <mat-icon matSuffix *ngIf="cadastroForm.get('dataNasci')?.valid" class="valid">task_alt</mat-icon>
+
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
             </div>

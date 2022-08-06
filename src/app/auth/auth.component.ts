@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Validators, FormBuilder } from '@angular/forms';
+import { HotToastService } from '@ngneat/hot-toast';
 import { Usuario } from '../shared/models/usuario';
 import { AuthService } from '../shared/services/auth.service';
 
@@ -22,7 +23,7 @@ export class AuthComponent implements OnInit {
       {
         nome: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
-        senha: ['', [Validators.minLength(8)]],
+        senha: ['', [Validators.minLength(8),Validators.required]],
         dataNasci: ['', [Validators.required]],
         nickName: [''],
       },
@@ -36,23 +37,34 @@ export class AuthComponent implements OnInit {
       },
    
     );
-    
+   progresso1 = 0;
+    block=false
     progresso() {
     this.tipo='dark'
-      let progresso1 = 0;
-      if (this.cadastroForm.get('nome')?.valid) progresso1 = progresso1 + 25;
-      if (this.cadastroForm.get('email')?.valid) progresso1 = progresso1 + 25;
-      if (this.cadastroForm.get('senha')?.valid) progresso1 = progresso1 + 25;
-      if (this.cadastroForm.get('dataNasci')?.valid) progresso1 = progresso1 + 25;
-  if(progresso1==100) this.tipo="success"
-      return progresso1;
+      this.progresso1 = 0;
+      if (this.cadastroForm.get('nome')?.valid) this.progresso1 = this.progresso1 + 25;
+      if (this.cadastroForm.get('email')?.valid)  this.progresso1 = this.progresso1+ 25;
+      if (this.cadastroForm.get('senha')?.valid) this.progresso1 = this.progresso1+ 25;
+      if (this.cadastroForm.get('dataNasci')?.valid)  this.progresso1 = this.progresso1 + 25;
+  if(this.progresso1==100) this.tipo="success"
+      return  this.progresso1;
     }
   
     onSubmit(){
       let user:Usuario = {... this.cadastroForm.value, dataCad: new Date()}
-      console.log(user)
-      this.auth.onsubmit(user.email,user.senha,user)
-      console.log("usuario criado" + user)
+     console.time('cadastro')
+      this.auth.onsubmit(user.email,user.senha,user).then(
+        ()=>{
+           console.log("usuario criado" + user)
+           console.log("Caiu na promisse")
+           console.timeLog('cadastro')
+          this.cadastroForm.reset()
+      }
+      )
+      this.cadastroForm.reset()
+      this.cadastroForm.clearValidators()
+      this.progresso1=0
+      
   
     }
   
@@ -62,17 +74,57 @@ export class AuthComponent implements OnInit {
     constructor(
       private fb: FormBuilder,
       private auth:AuthService,
-      private afAuth:AngularFireAuth
+      private afAuth:AngularFireAuth,
+      private ht: HotToastService
     ) {}
   user?:any
   
     ngOnInit(): void {
-    this.afAuth.authState.subscribe(a=> this.user=a)
+    this.afAuth.authState.subscribe(a=> this.user=a);
+    this.tipo='dark'
       
     }
-  
+    errorPassword=0
     images = [62, 83, 466, 965, 982, 1043, 738].map(
       (n) => `https://picsum.photos/id/${n}/900/500`
     );
+
+    login(){
+      let email = this.loginForm.get('email')?.value;
+      let senha = this.loginForm.get('senha')?.value;
+      this.auth.onLogin(email,senha).then(
+        user=>{
+          this.ht.success("Olá, " + user.user?.email)
+
+
+        }
+      ).catch(
+        error=>{
+          if(error.code){
+            switch(error.code){
+               case 'auth/user-not-found':
+                this.ht.error("Usuario não encontrado")
+               break
+               case 'auth/wrong-password':
+                this.errorPassword++
+                this.ht.error("Senha invalida")
+                if(this.errorPassword>3){
+                  this.ht.error("Você esgotou o limite de tentativas")
+                  this.block=true
+                }
+               break
+               case 'auth/too-many-requests':
+                this.block=true
+                this.ht.error("Sua conta foi temporariamente bloqueada")
+                
+               break
+            }
+          }
+        }
+      )
+    }
+    recuperar(){
+      this.auth.recoverPassword(this.loginForm.get('email')?.value)
+    }
   }
   
