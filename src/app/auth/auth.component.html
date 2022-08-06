@@ -1,0 +1,191 @@
+<div class="centralizado">
+
+    <mat-tab-group mat-align-tabs="center">
+      <mat-tab label="Login">   <div class="container cadastro">
+        <div class="login scale-up-center  bg">
+          <h2>Login</h2>
+          <form [formGroup]="loginForm" class="form animate__bounce">
+            
+            <div class="input">
+              <mat-form-field class="form-mat" appearance="outline">
+                <mat-label>Email</mat-label>
+                <input
+                  type="email"
+                  matInput
+                  formControlName="email"
+                  placeholder="Ex. email@example.com"
+                />
+                <mat-error
+                  *ngIf="
+                    cadastroForm.get('email')?.errors &&
+                    cadastroForm.get('email')?.touched
+                  "
+                >
+                  Email invalido
+                </mat-error>
+              </mat-form-field>
+            </div>
+      
+            <div  class="input">
+                   <mat-form-field  class="form-mat"  appearance="outline">
+                  <mat-label>Senha</mat-label>
+                  <input
+                    type="password"
+                    matInput
+                    formControlName="senha"
+                    placeholder="Minimo de 8 caracteres"
+                  />
+             
+                  <mat-error *ngIf="cadastroForm.get('senha')?.errors?.['minlength']"
+                    >caracteres {{ cadastroForm.get("senha")?.value.length }} /
+                    8</mat-error
+                  >
+                </mat-form-field>
+          
+              </div>
+          </form>
+          <div class="botoesLogin">
+            <div class="botoesLogin">
+              <button
+                [disabled]="loginForm.invalid"
+                (click)="onSubmit()"
+                type="submit"
+                class="btn btn-primary"
+              >
+               Login
+              </button>
+            </div>
+            <div class="botoesLogin">
+             <button
+               
+               (click)="onClikgoogle()"
+               class="btn btn-danger"
+             >
+               Entrar com o google
+             </button>
+           </div>
+            
+          </div>
+        </div>
+      </div> </mat-tab>
+      <mat-tab label="Cadastro">  
+         <div class="container cadastro">
+        <div class="cadastro1 scale-up-center  bg">
+          <h2>Cadastro</h2>
+          <form [formGroup]="cadastroForm" class="form animate__bounce">
+            <div class="input">
+              <mat-form-field class="form-mat" appearance="outline">
+                <mat-label>Nome</mat-label>
+                <input
+                  type="text"
+                  formControlName="nome"
+                  matInput
+                  id="nome"
+                  placeholder="seu nome"
+                />
+                <mat-error
+                  *ngIf="
+                    cadastroForm.get('nome')?.errors &&
+                    cadastroForm.get('nome')?.touched
+                  "
+                >
+                  Nome invalido
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="input">
+              <mat-form-field class="form-mat" appearance="outline">
+                <mat-label>Email</mat-label>
+                <input
+                  type="email"
+                  matInput
+                  formControlName="email"
+                  placeholder="Ex. email@example.com"
+                />
+                <mat-error
+                  *ngIf="
+                    cadastroForm.get('email')?.errors &&
+                    cadastroForm.get('email')?.touched
+                  "
+                >
+                  Email invalido
+                </mat-error>
+              </mat-form-field>
+            </div>
+      
+      
+            <div  class="input">
+                   <mat-form-field  class="form-mat"  appearance="outline">
+                  <mat-label>Senha</mat-label>
+                  <input
+                    type="password"
+                    matInput
+                    formControlName="senha"
+                    placeholder="Minimo de 8 caracteres"
+                  />
+             
+                  <mat-error *ngIf="cadastroForm.get('senha')?.errors?.['minlength']"
+                    >caracteres {{ cadastroForm.get("senha")?.value.length }} /
+                    8</mat-error
+                  >
+                </mat-form-field>
+          
+              </div>
+      
+      
+              <div class="input">
+              <mat-form-field appearance="outline" class="form-mat">
+                <mat-label>Data de nascimento</mat-label>
+                <input
+                  matInput
+                  formControlName="dataNasci"
+                  [matDatepicker]="picker"
+                />
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <p>
+              <ngb-progressbar 
+                [showValue]="true"
+                [animated]="true"
+                [striped]="true"
+                type="{{ tipo }}"
+                [value]="progresso()"
+              ></ngb-progressbar>
+            </p>
+          </form>
+          <div >
+            <div class="botoes">
+              <button
+                [disabled]="cadastroForm.invalid"
+                (click)="onSubmit()"
+                type="submit"
+                class="btn btn-primary"
+              >
+                Cadastrar
+              </button>
+            </div>
+            <div class="botoes">
+             <button
+               
+               (click)="onClikgoogle()"
+               class="btn btn-danger"
+             >
+               Entrar com o google
+             </button>
+           </div>
+            
+          </div>
+        </div>
+      </div></mat-tab>
+      
+      
+    </mat-tab-group>
+  
+  </div>  
+  
