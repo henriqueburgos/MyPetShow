@@ -4,6 +4,7 @@ import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { Usuario } from '../models/usuario';
 import { GoogleAuthProvider } from "firebase/auth";
 import { HotToastService } from '@ngneat/hot-toast';
+import { Login } from '../models/login';
 @Injectable({
   providedIn: "root",
 })
@@ -67,4 +68,8 @@ recoverPassword(email:string){
   this.afauth.sendPasswordResetEmail(email)
 }
 
-}
+getpic(){
+  return this.db.collection("FotosLogin").valueChanges()
+  }
+  }
+

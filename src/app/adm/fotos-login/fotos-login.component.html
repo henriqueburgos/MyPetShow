@@ -1,0 +1,74 @@
+<div class="cadastro ">
+  <div class="cadastro1">
+
+    <h2 style="text-align:center ;">Cadastrar Imagem para tela de login</h2>
+   <div *ngIf="!enviando">
+     <form [formGroup]="cadastrarFotos" class="  scale-up-center">
+       <div class="direction">
+      
+             <div>
+                 <mat-form-field appearance="outline">
+                     <mat-label>Creditos</mat-label>
+                     <input
+                       type="text"
+                       matInput
+                       formControlName="creditos"
+                       placeholder="Foto do artista tal, link tal "
+                     />
+     
+                     <mat-error
+                       *ngIf="
+                         cadastrarFotos.get('creditos')?.errors &&
+                         cadastrarFotos.get('creditos')?.touched
+                       "
+                     >
+                       Creditos invalido
+                     </mat-error>
+                   </mat-form-field>
+             </div>
+             <div >
+                   <input
+                 (change)="setImage($event)"
+                 #imagem
+                 type="file"
+                 name="imagem"
+                 hidden
+               />
+               <button
+                (click)="imagem.click()"
+               
+                 mat-raised-button
+                 color="primary"
+               >   
+                   
+           
+     
+           <mat-icon
+           matSuffix
+           *ngIf="imagem.value"
+           class="valid"
+           >task_alt</mat-icon>
+                 Adicionar Foto
+                 </button> 
+               </div>
+           </div>
+                  
+             <div>
+         
+               <button mat-button class="btn btn-warning" (click)="upload()"> Cadastrar </button>
+                   </div>
+       </form>
+   </div>
+   <div *ngIf="processoConcluido$ ==false">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Enviando</span>
+    </div>
+   </div>
+  <div *ngIf="processoConcluido$ ==true">
+
+    <span>Enviado :D</span>
+  </div>
+  
+  </div>
+
+</div>

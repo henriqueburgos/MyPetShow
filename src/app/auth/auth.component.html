@@ -1,21 +1,13 @@
-<div class="centralizado">
+<div  *ngIf="arrayimg" class="centralizado">
   <div>
-    <div class=" position-absolute top-0 start-0 botoesLogin ">
-      <img src="assets/pngegg (1).png" width="40px" height="40px" alt="">
-      <h2  >MyPet Show</h2>
+    <div class="position-absolute top-0 start-0 botoesLogin">
+      <img src="assets/pngegg (1).png" width="40px" height="40px" alt="" />
+      <h2>MyPet Show</h2>
     </div>
-    <img
-      class="imagem"
-      width="100%"
-      height="800px"
-      src="/assets/pets.jpg"
-      alt=""
-    />
-    
     <div
-      class="container cadastro position-absolute top-50 start-50 translate-middle"
+      class="container cadastro position-absolute posicao translate-middle"
     >
-      <div class="cadastro1 scale-up-center">
+      <div  class="cadastro1 scale-up-center">
         <mat-tab-group mat-align-tabs="center">
           <mat-tab label="Login">
             <div class="container">
