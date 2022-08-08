@@ -18,6 +18,8 @@ import { AuthModule } from './auth/auth.module';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
+import { PerfilModule } from './perfil/perfil.module';
+import { AdmModule } from './adm/adm.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ AngularFireModule.initializeApp(environment.firebase),
     MaterialModule,
     AuthModule,
     CoreModule,
+    PerfilModule,
+    AdmModule,
     NgbCarouselModule,
     AngularFireAuthModule,
     AngularFirestoreModule,

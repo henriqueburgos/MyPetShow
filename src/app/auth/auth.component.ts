@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Validators, FormBuilder } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
+import { tap } from 'rxjs';
+import { Login } from '../shared/models/login';
 import { Usuario } from '../shared/models/usuario';
 import { AuthService } from '../shared/services/auth.service';
 
@@ -29,7 +31,7 @@ export class AuthComponent implements OnInit {
       },
    
     );
-  
+  arrayimg?:any[]
     loginForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -67,7 +69,7 @@ export class AuthComponent implements OnInit {
       
   
     }
-  
+   
     onClikgoogle(){
       this.auth.onloginGoogle()
     }
@@ -75,11 +77,22 @@ export class AuthComponent implements OnInit {
       private fb: FormBuilder,
       private auth:AuthService,
       private afAuth:AngularFireAuth,
-      private ht: HotToastService
+      private ht: HotToastService,
+      private elemento: ElementRef
     ) {}
   user?:any
   
     ngOnInit(): void {
+      this.auth.getpic().pipe( 
+
+        tap(b=>{
+          let array:any[]=b
+          this.elemento.nativeElement.ownerDocument.body.background=array[(Math.floor(Math.random()*array.length))].url
+         
+        })
+      ) .subscribe(a=> this.arrayimg=a)
+      
+      
     this.afAuth.authState.subscribe(a=> this.user=a);
     this.tipo='dark'
       
@@ -126,5 +139,10 @@ export class AuthComponent implements OnInit {
     recuperar(){
       this.auth.recoverPassword(this.loginForm.get('email')?.value)
     }
+
+    ngAfterViewInit(): void {
+     
+    }
+
   }
   
