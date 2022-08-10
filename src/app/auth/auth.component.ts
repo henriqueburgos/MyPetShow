@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
-import { tap } from 'rxjs';
+import { resolve } from 'dns';
+import { Subscription, tap } from 'rxjs';
 import { Login } from '../shared/models/login';
 import { Usuario } from '../shared/models/usuario';
 import { AuthService } from '../shared/services/auth.service';
@@ -78,40 +80,68 @@ export class AuthComponent implements OnInit {
       private auth:AuthService,
       private afAuth:AngularFireAuth,
       private ht: HotToastService,
-      private elemento: ElementRef
+      private elemento: ElementRef,
+      private router:Router
     ) {}
   user?:any
-  
+  sub?:Subscription
+  sub2?:Subscription
     ngOnInit(): void {
-      this.auth.getpic().pipe( 
-
+   this.sub=this.auth.getpic().pipe( 
         tap(b=>{
           let array:any[]=b
-          this.elemento.nativeElement.ownerDocument.body.background=array[(Math.floor(Math.random()*array.length))].url
+     this.elemento.nativeElement.ownerDocument.body.style.background=`url(${array[(Math.floor(Math.random()*array.length))].url})`
+          this.elemento.nativeElement.ownerDocument.body.style.backgroundSize="cover"
          
         })
-      ) .subscribe(a=> this.arrayimg=a)
+      ).subscribe(a=> this.arrayimg=a)
       
       
     this.afAuth.authState.subscribe(a=> this.user=a);
     this.tipo='dark'
       
     }
+    ngOnDestroy(){
+      this.sub?.unsubscribe()
+      this.sub2?.unsubscribe()
+      this.elemento.nativeElement.ownerDocument.body.style.background="none"
+    }
     errorPassword=0
-    images = [62, 83, 466, 965, 982, 1043, 738].map(
-      (n) => `https://picsum.photos/id/${n}/900/500`
-    );
 
     login(){
       let email = this.loginForm.get('email')?.value;
       let senha = this.loginForm.get('senha')?.value;
-      this.auth.onLogin(email,senha).then(
+    this.auth.onLogin(email,senha).then(
         user=>{
-          this.ht.success("Olá, " + user.user?.email)
-
-
+          let admin1:boolean
+          this.sub2= this.auth.verifytoken().subscribe( a=> {
+              a?.getIdTokenResult().then(
+                b=>{
+                if(b?.claims['admin']){
+                admin1=b?.claims['admin'].includes('true')
+                console.log("existe o b")
+                }else{
+                  console.log("nao existe o b")
+                  admin1=false
+                }
+                }
+              ).then(b=>{
+                console.log(b)
+                this.sub?.unsubscribe()
+                this.elemento.nativeElement.ownerDocument.body.style.background="none"
+                 if(admin1){
+                  
+                  this.ht.success("Bem vindo admin, " + user.user?.email)
+                  this.router.navigate(['adm/fotos-login'])
+                  
+                }else{
+                this.ht.success("Olá, " + user.user?.email)  
+                this.router.navigate(['area-usuario'])}
+            })             
+            })  
         }
-      ).catch(
+      ).then(a=>{ ;console.log("Cancelou") })
+      .catch(
         error=>{
           if(error.code){
             switch(error.code){
@@ -140,9 +170,7 @@ export class AuthComponent implements OnInit {
       this.auth.recoverPassword(this.loginForm.get('email')?.value)
     }
 
-    ngAfterViewInit(): void {
-     
-    }
+ 
 
   }
   

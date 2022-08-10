@@ -5,6 +5,7 @@ import { Usuario } from '../models/usuario';
 import { GoogleAuthProvider } from "firebase/auth";
 import { HotToastService } from '@ngneat/hot-toast';
 import { Login } from '../models/login';
+import { from, map, of, switchMap, tap } from 'rxjs';
 @Injectable({
   providedIn: "root",
 })
@@ -57,6 +58,11 @@ this.ht.error("Email já registrado na aplicação!")
     
   }
     ))
+  }
+verifytoken(){
+  return this.afauth.authState
+    
+    
   }
 
 

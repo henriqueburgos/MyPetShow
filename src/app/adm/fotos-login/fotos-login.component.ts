@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { HotToastService } from '@ngneat/hot-toast';
 import { Console } from 'console';
 import { Timestamp } from 'firebase/firestore';
 import { url } from 'inspector';
-import { finalize, Observable, takeLast, tap, timestamp } from 'rxjs';
+import { finalize, Observable, Subscription, takeLast, tap, timestamp } from 'rxjs';
 import { Login } from 'src/app/shared/models/login';
 import { AdmService } from 'src/app/shared/services/adm.service';
+import { FotoInteiraComponent } from './foto-inteira/foto-inteira.component';
 
 @Component({
   selector: 'app-fotos-login',
@@ -15,7 +18,13 @@ import { AdmService } from 'src/app/shared/services/adm.service';
 })
 export class FotosLoginComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private storage: AngularFireStorage, private adm:AdmService) { }
+  constructor(
+    private fb: FormBuilder,
+     private storage: AngularFireStorage, 
+    private adm:AdmService,
+     private ht :HotToastService, 
+     private dialog: MatDialog,
+     private elemento: ElementRef,) { }
 
   cadastrarFotos= this.fb.group(
     {
@@ -23,18 +32,35 @@ export class FotosLoginComponent implements OnInit {
       creditos: ['',[Validators.required]]
     }
   )
+fotosLogin$?:any;
 processoConcluido$?:boolean
 enviando?:boolean=false
 imagem?:File
-
+nomeImg?:string
+preEnvio=false
   setImage(ev: any) {
     this.imagem = ev.target.files[0];
+this.nomeImg=this.imagem?.name
+    this.classe='btn-success'
+    this.txtbutton='Foto adicionada!'
+    this.preEnvio=true
+  }
+  resetimg(){
+    console.log(this.imagem)
+    this.imagem= undefined;
+    this.txtbutton='Adicionar foto';
+    this.classe='btn-primary';
+    this.preEnvio=false
     console.log(this.imagem)
   }
 
+  sub?:Subscription
+  txtbutton='Adicionar foto'
+classe:string='btn-primary'
   upload(){
     this.processoConcluido$=false
     this.enviando=true
+    
     const filePath = `fotosLogin/${this.imagem?.name}`;
     const ref= this.storage.ref(filePath)
    this.storage.upload(filePath,this.imagem).then(a=> a.ref.getDownloadURL().then(url=> {
@@ -43,13 +69,48 @@ imagem?:File
       url:url,       
     }
     console.log(login)
-    this.adm.addFirestore(login,this.imagem!.name).then( a=>this.processoConcluido$=true).catch(error=> console.log(error))
+    this.adm.addFirestore(login,this.imagem!.name).then( a=>
+      { this.ht.success("Imagem cadastrada no banco de dados")
+        this.processoConcluido$= undefined
+        this.enviando=false
+        this.preEnvio=false
+       this.txtbutton='Adicionar foto'
+       this.classe='btn-primary'
+       this.cadastrarFotos.reset()
+    }).catch(error=> console.log(error))
    
   }
   )
    )
 }
+deletefile(file:string, uid:string){
+  this.storage.refFromURL(file).delete().subscribe(a=>console.log('deu certo'))
+  this.adm.deletepic(uid)
+}
   ngOnInit(): void {
+    this.elemento.nativeElement.ownerDocument.body.style.background='withe'
+  this.sub=  this.adm.getpic().pipe(
+      tap(
+        (resposta)=>{
+          this.fotosLogin$= resposta
+console.log(this.fotosLogin$)
+        }
+      )
+    ).subscribe()
   }
+
+  ngOnDestroy(){
+    
+    this.sub?.unsubscribe()
+  }
+clickDialog(url:string){
+  this.dialog.open(FotoInteiraComponent, { maxWidth: '512px',maxHeight:'512px',
+    data:{
+      url: url
+    }
+  }
+  )
+
+}
 
 }
