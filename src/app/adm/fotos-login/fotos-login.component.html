@@ -1,74 +1,103 @@
-<div class="cadastro ">
-  <div class="cadastro1">
+<div class="cadastro" *ngIf="fotosLogin$">
+  <div class=" container cadastro1">
+    <h2 style="text-align: center">Lista de imagens cadastradas</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Comentario</th>
+          <th scope="col">Arquivo</th>
+          <th scope="col">Apagar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ftLogin of fotosLogin$; index as i">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ ftLogin.comentario }}</td>
+          <td>
+            <div class="click">
+              <img
+                (click)="clickDialog(ftLogin.url)"
+                [src]="ftLogin.url"
+                class="me-2"
+                style="width: 40px; border-radius: 10%"
+              />
+            </div>
+          </td>
+          <td>
+            <button (click)="deletefile(ftLogin.url, ftLogin.uid)" mat-button>
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-    <h2 style="text-align:center ;">Cadastrar Imagem para tela de login</h2>
-   <div *ngIf="!enviando">
-     <form [formGroup]="cadastrarFotos" class="  scale-up-center">
-       <div class="direction">
-      
-             <div>
-                 <mat-form-field appearance="outline">
-                     <mat-label>Creditos</mat-label>
-                     <input
-                       type="text"
-                       matInput
-                       formControlName="creditos"
-                       placeholder="Foto do artista tal, link tal "
-                     />
-     
-                     <mat-error
-                       *ngIf="
-                         cadastrarFotos.get('creditos')?.errors &&
+    <h3 style="text-align: center">Cadastrar Imagem para tela de login</h3>
+    <div *ngIf="!enviando">
+      <form [formGroup]="cadastrarFotos" class="scale-up-center">
+        <div class="direction">
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Comentario</mat-label>
+              <input
+                type="text"
+                matInput
+                formControlName="creditos"
+                placeholder="Foto do artista tal, link tal "
+              />
+
+              <mat-error
+                *ngIf="
+                         cadastrarFotos.get('creditos')?.errors?.['required'] &&
                          cadastrarFotos.get('creditos')?.touched
                        "
-                     >
-                       Creditos invalido
-                     </mat-error>
-                   </mat-form-field>
-             </div>
-             <div >
-                   <input
-                 (change)="setImage($event)"
-                 #imagem
-                 type="file"
-                 name="imagem"
-                 hidden
-               />
-               <button
-                (click)="imagem.click()"
-               
-                 mat-raised-button
-                 color="primary"
-               >   
-                   
-           
-     
-           <mat-icon
-           matSuffix
-           *ngIf="imagem.value"
-           class="valid"
-           >task_alt</mat-icon>
-                 Adicionar Foto
-                 </button> 
-               </div>
-           </div>
-                  
-             <div>
-         
-               <button mat-button class="btn btn-warning" (click)="upload()"> Cadastrar </button>
-                   </div>
-       </form>
-   </div>
-   <div *ngIf="processoConcluido$ ==false">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Enviando</span>
+              >
+                Comentario invalido
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <input
+              (change)="setImage($event)"
+              #imagem
+              type="file"
+              name="imagem"
+              hidden
+            />
+            <button
+              [disabled]="preEnvio"
+              (click)="imagem.click()"
+              class="btn {{ classe }}"
+            >
+              <mat-icon matSuffix *ngIf="preEnvio" class="valid"
+                >task_alt</mat-icon
+              >
+              {{ txtbutton }}
+            </button>
+          </div>
+          <span *ngIf="preEnvio">{{ nomeImg }}</span>
+        </div>
+<div class="row1">
+  <div>
+    <button class="btn btn-success" [disabled]="cadastrarFotos.invalid || preEnvio==false" (click)="upload()">
+      Cadastrar
+    </button>
+  </div>
+  <div *ngIf="preEnvio" style="margin-left: 20px;">
+    <button class="btn btn-danger" (click)="resetimg()">
+      Cancelar pre-envio
+    </button>
+  </div>
+</div>
+      </form>
     </div>
-   </div>
-  <div *ngIf="processoConcluido$ ==true">
+    <div *ngIf="processoConcluido$ == false" class="direction">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Enviando</span>
+      </div>
 
-    <span>Enviado :D</span>
+      <p>Enviando</p>
+    </div>
   </div>
-  
-  </div>
-
 </div>

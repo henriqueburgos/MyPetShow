@@ -1,0 +1,35 @@
+<div class="cadastro" >
+    <div class=" container cadastro1">
+      <h2 style="text-align: center">Lista de Usuarios</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Data do Cadastro</th>
+            <th scope="col">Apagar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let users of usuarios$; index as i">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ users.nome }}</td>
+            <td>
+              {{users.email}}
+            </td>
+            <td>
+              {{users.dataCad.toDate() | date: 'medium'}}
+            </td>
+            <td>
+              <button (click)="deleteUser(users.uid)" mat-button>
+                <mat-icon  color="warn">delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+ 
+  </div>
+  

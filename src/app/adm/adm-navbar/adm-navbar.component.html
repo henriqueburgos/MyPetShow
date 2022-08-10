@@ -1,0 +1,18 @@
+<mat-toolbar class="navbar inNav">
+<div class="responsive">
+    <button mat-icon-button >
+        <mat-icon>menu</mat-icon>
+      </button>
+</div>
+<div class="responsiveButtons" >
+    <button mat-button  [routerLink]="['usuario']">
+     Usuarios
+    </button>
+
+    <button mat-button [routerLink]="['fotos-login']">
+   Fotos login  </button>
+   
+</div>
+
+    <button mat-button (click)="logout()"> <mat-icon>logout</mat-icon></button>
+   </mat-toolbar>

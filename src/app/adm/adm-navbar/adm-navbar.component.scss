@@ -1,0 +1,24 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+.navbar{
+    background-color :#FFF9CA;
+}
+.responsive{
+  display: none;
+}
+
+.responsiveButtons{
+  display: flex;
+  flex-direction: row;
+  flex: 95%;
+  justify-content: center;
+    }
+@media (max-width:'800px') {
+  .responsive{
+    display: block;
+  }
+  .responsiveButtons{
+display: none;
+  }
+}

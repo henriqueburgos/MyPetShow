@@ -38,24 +38,20 @@ h2 {
 }
 
 @media (max-width: 800px) {
-    .cadastro {
+    .cadastro { margin-top: 35%;
                width: 100%;
         height: 100%;
 
     }
 
-    .imagem {
-        display: none;
-    }
+
 
     .cadastro1 {
         border-radius: 20px;
         width: 100%;
         box-shadow: 1px 1px 18px #5a5353;
     }
-    .posicao{
-        position: static;
-    }
+
 
     .form {
         width: 100%;
@@ -78,6 +74,7 @@ h2 {
         -webkit-transform: scale(1);
         transform: scale(1);
     }
+    
 }
 
 @keyframes scale-up-center {
@@ -113,21 +110,11 @@ h2 {
 }
 
 .posicao{
-    position: absolute;
-    top: 45%;
-    left: 80%;
-    right: 35%;
+ display: flex;
+ justify-content: flex-end;
     
 }
 
-::ng-deep body {
-    background:"https://i.pinimg.com/originals/1e/94/b1/1e94b117d29d1f5c5c272d9eda17d9dc.png";
+.logocolor{
+    color: #d3ef22;
 }
-// .centralizado div:first-child{
-//     position: absolute;
-
-// }
-
-// .centralizado div:last-child{
-//     position: relative;
-// }
