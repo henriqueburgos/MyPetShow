@@ -1,9 +1,12 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from "@angular/fire/compat/storage";
-import { resolve } from 'dns';
+import { getApp } from "firebase/app";
+import { getFunctions, connectFunctionsEmulator, httpsCallable } from "firebase/functions";
 import { Login } from '../models/login';
+import { Usuario } from '../models/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +16,8 @@ export class AdmService {
   constructor(
     private db :AngularFirestore,
     public storage: AngularFireStorage,
-    private afauth:AngularFireAuth
+    private afauth:AngularFireAuth,
+    private http: HttpClient
     ) { }
 
    addFirestore(login:Login,string:string){
@@ -28,8 +32,11 @@ export class AdmService {
    getUser(){
     return this.db.collection("Usuario").valueChanges()
     }
-   deleteUser(uid:string){
-    return this.db.collection("Usuario").doc(uid).delete()
+
+   deleteUser(data:Usuario){   
+    let functions= getFunctions(getApp());
+    this.db.collection("Usuario").doc(data.uid).delete() 
+    this.http.post("http://localhost:5001/mypetshow/us-central1/deleteUser",{data}).subscribe(a=> console.log('deu certo ' +a))
     }
     logout(){
     return this.afauth.signOut()
@@ -38,5 +45,23 @@ export class AdmService {
     deletepic(uid:string){
       return this.db.collection("FotosLogin").doc(uid).delete()
     }
+    
+    setAdmin(data:Usuario){   
+      let functions= getFunctions(getApp());
+      this.http.post("http://localhost:5001/mypetshow/us-central1/setAdmin",{data}).subscribe(a=> console.log('deu certo aqui ' +a.valueOf))
+      }
+    
 
+
+    getToken(data:Usuario){
+      let functions= getFunctions(getApp());
+      let resposta:any
+return  this.http.post("http://localhost:5001/mypetshow/us-central1/getToken",{data})
+    
+    }
+
+  attFoto(data:Usuario){
+    let functions= getFunctions(getApp());
+return this.http.post("http://localhost:5001/mypetshow/us-central1/updatefoto",{data})
+    }
 }

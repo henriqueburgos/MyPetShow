@@ -58,13 +58,15 @@ export class AuthComponent implements OnInit {
       let user:Usuario = {... this.cadastroForm.value, dataCad: new Date()}
      console.time('cadastro')
       this.auth.onsubmit(user.email,user.senha,user).then(
-        ()=>{
-           console.log("usuario criado" + user)
+        (a)=>{
+           this.ht.success("usuario criado" + a)
            console.log("Caiu na promisse")
            console.timeLog('cadastro')
           this.cadastroForm.reset()
       }
       )
+      this.afAuth.signOut()
+      this.ht.success("usuario criado" )
       this.cadastroForm.reset()
       this.cadastroForm.clearValidators()
       this.progresso1=0
@@ -136,7 +138,7 @@ export class AuthComponent implements OnInit {
                   
                 }else{
                 this.ht.success("Olá, " + user.user?.email)  
-                this.router.navigate(['area-usuario'])}
+                this.router.navigate(['/usuario/feed'])}
             })             
             })  
         }

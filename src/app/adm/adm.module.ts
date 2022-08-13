@@ -10,6 +10,9 @@ import { AdmComponent } from './adm.component';
 import { AdmNavbarComponent } from './adm-navbar/adm-navbar.component';
 import { FotoInteiraComponent } from './fotos-login/foto-inteira/foto-inteira.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { DeleteUserComponent } from './usuarios/delete-user/delete-user.component';
+import { DadosUserComponent } from './usuarios/dados-user/dados-user.component';
 
 
 @NgModule({
@@ -18,14 +21,17 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
     AdmComponent,
     AdmNavbarComponent,
     FotoInteiraComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    DeleteUserComponent,
+    DadosUserComponent
   ],
   imports: [
     CommonModule,
     AdmRoutingModule,
     ReactiveFormsModule,
     MaterialModule,
-    NgbProgressbarModule
+    NgbProgressbarModule,
+    HttpClientModule
   ]
 })
 export class AdmModule { }

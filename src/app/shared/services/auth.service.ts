@@ -4,8 +4,8 @@ import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { Usuario } from '../models/usuario';
 import { GoogleAuthProvider } from "firebase/auth";
 import { HotToastService } from '@ngneat/hot-toast';
-import { Login } from '../models/login';
-import { from, map, of, switchMap, tap } from 'rxjs';
+import { getApp } from "firebase/app";
+import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
 @Injectable({
   providedIn: "root",
 })
@@ -15,12 +15,15 @@ export class AuthService {
     private google:GoogleAuthProvider,
     private afauth: AngularFireAuth,
     private db: AngularFirestore,
-    private ht: HotToastService
+    private ht: HotToastService,
+
   ) { }
 
+   functions = getFunctions(getApp());
+   conected= connectFunctionsEmulator(this.functions, "localhost", 5001);
+   
 
-
-  onloginGoogle(){
+  onloginGoogle(): void{
     this.afauth.signInWithPopup(this.google)
 
   }

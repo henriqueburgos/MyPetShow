@@ -12,12 +12,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { FeedComponent } from './feed/feed.component';
 
 
 @NgModule({
   declarations: [
     AreaUsuarioComponent,
-    NavbarUsuarioComponent
+    NavbarUsuarioComponent,
+    FeedComponent
   ],
   imports: [
     CommonModule,
