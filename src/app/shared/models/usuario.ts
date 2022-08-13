@@ -9,6 +9,7 @@ export interface Usuario {
     senha:string,
     dataNasci: Timestamp,
     dataCad?: Timestamp,
-    foto?:File
+    foto?:File,
+    uid?:string
 
 }

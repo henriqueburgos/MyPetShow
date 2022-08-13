@@ -1,13 +1,14 @@
-<div class="cadastro" >
+<div class=" container cadastro" >
     <div class=" container cadastro1">
       <h2 style="text-align: center">Lista de Usuarios</h2>
-      <table class="table table-striped">
+      <table class="table  table-striped">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Nome</th>
-            <th scope="col">Email</th>
-            <th scope="col">Data do Cadastro</th>
+            <th scope="col" class="responsivo">Email</th>
+            <th scope="col">Detalhes</th>
+            <th scope="col">Setar como Admin</th>
             <th scope="col">Apagar</th>
           </tr>
         </thead>
@@ -15,14 +16,21 @@
           <tr *ngFor="let users of usuarios$; index as i">
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ users.nome }}</td>
-            <td>
+            <td class="responsivo">
               {{users.email}}
             </td>
             <td>
-              {{users.dataCad.toDate() | date: 'medium'}}
+              <button (click)="getToken(users)" mat-button>
+                <mat-icon  color="accent">account_circle</mat-icon>
+              </button>
             </td>
             <td>
-              <button (click)="deleteUser(users.uid)" mat-button>
+              <button (click)="setAdmin(users)" mat-button>
+                <mat-icon  color="primary">account_circle</mat-icon>
+              </button>
+            </td>
+            <td>
+              <button (click)="deleteUser(users)" mat-button>
                 <mat-icon  color="warn">delete</mat-icon>
               </button>
             </td>
