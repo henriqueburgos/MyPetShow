@@ -1,0 +1,88 @@
+
+
+<div *ngIf="user">
+  <div class="container cadastro">
+    <div class="container cadastro1">
+      <div *ngIf="user">
+        <h2 style="text-align: center">Meu Perfil</h2>
+        <div class="input">
+          <form class="form animate__bounce">
+            <mat-form-field class="form-mat" appearance="outline">
+              <mat-label><strong> Email</strong></mat-label>
+
+              <input matInput disabled value="{{ user.email }}" />
+            </mat-form-field>
+            <mat-form-field class="form-mat" appearance="outline">
+              <mat-label><strong> Admin</strong></mat-label>
+
+              <input matInput disabled value="{{ user.customClaims.admin }}" />
+            </mat-form-field>
+            <mat-form-field class="form-mat" appearance="outline">
+              <mat-label><strong> superAdmin</strong></mat-label>
+
+              <input
+                matInput
+                disabled
+                value="{{ user.customClaims.superAdmin }}"
+              />
+            </mat-form-field>
+            <mat-form-field class="form-mat" appearance="outline">
+              <mat-label><strong> Desabilitado</strong></mat-label>
+
+              <input matInput disabled value="{{ user.disabled }}" />
+            </mat-form-field>
+          </form>
+        </div>
+        <h4 style="text-align: center" >Foto Perfil</h4>
+        <div *ngIf="!enviando">
+         <div>
+            <input
+              (change)="setImage($event)"
+              #imagem
+              type="file"
+              name="imagem"
+              hidden
+            />
+            <button
+              *ngIf="!preEnvio"
+              (click)="imagem.click()"
+              class="btn {{ classe }}"
+            
+            >
+              <mat-icon matSuffix *ngIf="preEnvio" class="valid"
+                >task_alt</mat-icon
+              >
+              {{ txtbutton }}
+            </button>
+            <div *ngIf="preEnvio" style="width: 20px;">
+                <button class="btn btn-danger" (click)="resetimg()">
+                  Cancelar 
+                </button>
+                <button class="btn btn-primary" (click)="upload()">
+                  Enviar 
+                </button>
+              </div>
+          </div>
+         </div>
+         <div *ngIf="processoConcluido$ == false" class="direction">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Enviando</span>
+            </div>
+      
+            <p>Enviando</p>
+          </div>
+        <div style="  display: flex   ;justify-content: center;">
+
+            <img  src="{{ user.photoURL }}" alt="" width="80%" height="10%" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!user" class="direction">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Enviando</span>
+    </div>
+
+    <p>Carregando</p>
+  </div>

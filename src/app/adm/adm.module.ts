@@ -5,7 +5,7 @@ import { AdmRoutingModule } from './adm-routing.module';
 import { FotosLoginComponent } from './fotos-login/fotos-login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../shared/material/material.module';
-import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbOffcanvasModule, NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdmComponent } from './adm.component';
 import { AdmNavbarComponent } from './adm-navbar/adm-navbar.component';
 import { FotoInteiraComponent } from './fotos-login/foto-inteira/foto-inteira.component';
@@ -13,6 +13,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { DeleteUserComponent } from './usuarios/delete-user/delete-user.component';
 import { DadosUserComponent } from './usuarios/dados-user/dados-user.component';
+import { PerfilLogadoComponent } from './usuarios/perfil-logado/perfil-logado.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { DadosUserComponent } from './usuarios/dados-user/dados-user.component';
     FotoInteiraComponent,
     UsuariosComponent,
     DeleteUserComponent,
-    DadosUserComponent
+    DadosUserComponent,
+    PerfilLogadoComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +33,8 @@ import { DadosUserComponent } from './usuarios/dados-user/dados-user.component';
     ReactiveFormsModule,
     MaterialModule,
     NgbProgressbarModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbOffcanvasModule
   ]
 })
 export class AdmModule { }

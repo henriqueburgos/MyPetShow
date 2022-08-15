@@ -1,14 +1,55 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="'over'"
+     >
+    <mat-toolbar *ngIf="user" style="justify-content: center;"><img src="{{user.photoURL}}" alt="" width="40px" height="50px" style="border-radius: 50px;"></mat-toolbar>
+   
+    <mat-nav-list>
+     <div class="of">
+      <button mat-button   (click)="drawer.toggle()"  [routerLink]="['/usuario/feed']">
+        area do usuario
+       </button>  
+            <button  mat-button   (click)="drawer.toggle()"  [routerLink]="['perfil']">
+             Meu perfil
+            </button>
+            <button  mat-button   (click)="drawer.toggle()"  [routerLink]="['usuario']">
+             Usuarios
+            </button>
+        
+            <button mat-button   (click)="drawer.toggle()" [routerLink]="['fotos-login']">
+           Fotos login  </button>
+    
+     </div>
+    </mat-nav-list>
+    <mat-divider></mat-divider>
+  </mat-sidenav>
+  <mat-sidenav-content>
+  
 <mat-toolbar class="navbar inNav">
-<div class="responsive">
-    <button mat-icon-button >
-        <mat-icon>menu</mat-icon>
-      </button>
-</div>
+  <button
+  type="button"
+  aria-label="Toggle sidenav"
+  mat-icon-button
+  (click)="drawer.toggle()"
+  *ngIf="isHandset$ | async">
+  <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+</button>
+   
+   
+      
+
+
 <div class="responsiveButtons" >
+  <button mat-button    [routerLink]="['/usuario/feed']">
+    Area do usuario
+   </button>  
     <button mat-button  [routerLink]="['usuario']">
      Usuarios
     </button>
-
+          <button  mat-button    [routerLink]="['perfil']">
+           Meu perfil
+          </button>
     <button mat-button [routerLink]="['fotos-login']">
    Fotos login  </button>
    
@@ -16,3 +57,9 @@
 
     <button mat-button (click)="logout()"> <mat-icon>logout</mat-icon></button>
    </mat-toolbar>
+   <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+
