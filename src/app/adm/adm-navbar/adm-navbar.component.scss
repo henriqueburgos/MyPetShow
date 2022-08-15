@@ -21,4 +21,18 @@
   .responsiveButtons{
 display: none;
   }
+ .botaoresponsivo{
+  display: flex; flex-direction: column; align-items: flex-start;
+  }
+}
+
+.of{
+  display: flex; flex-direction: column; 
+
+}
+
+.botaoresponsivo{
+  padding: 10px;
+  margin-top: 20px;
+  display: none;
 }

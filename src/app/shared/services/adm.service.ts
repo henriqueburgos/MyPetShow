@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from "@angular/fire/compat/storage";
 import { getApp } from "firebase/app";
 import { getFunctions, connectFunctionsEmulator, httpsCallable } from "firebase/functions";
+import { AttFoto } from '../models/AttFoto';
 import { Login } from '../models/login';
 import { Usuario } from '../models/usuario';
 
@@ -23,7 +24,9 @@ export class AdmService {
    addFirestore(login:Login,string:string){
     return this.db.collection('FotosLogin').doc(string).set({...login, uid:string})
    }
-
+   attFotodb(uid:string,string:string){
+    return this.db.collection('Usuario').doc(uid).update({ photoURL:string})
+   }
    getpic(){
     return this.db.collection("FotosLogin").valueChanges()
     }
@@ -53,14 +56,14 @@ export class AdmService {
     
 
 
-    getToken(data:Usuario){
+    getToken(data:any){
       let functions= getFunctions(getApp());
       let resposta:any
 return  this.http.post("http://localhost:5001/mypetshow/us-central1/getToken",{data})
     
     }
 
-  attFoto(data:Usuario){
+  attFoto(data:AttFoto){
     let functions= getFunctions(getApp());
 return this.http.post("http://localhost:5001/mypetshow/us-central1/updatefoto",{data})
     }

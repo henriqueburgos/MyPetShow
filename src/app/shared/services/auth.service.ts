@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { Usuario } from '../models/usuario';
-import { GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider, User, UserProfile } from "firebase/auth";
 import { HotToastService } from '@ngneat/hot-toast';
 import { getApp } from "firebase/app";
 import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: "root",
 })
@@ -16,6 +17,7 @@ export class AuthService {
     private afauth: AngularFireAuth,
     private db: AngularFirestore,
     private ht: HotToastService,
+    private router :Router
 
   ) { }
 
@@ -24,7 +26,18 @@ export class AuthService {
    
 
   onloginGoogle(): void{
-    this.afauth.signInWithPopup(this.google)
+    this.afauth.signInWithPopup(this.google).then(
+    (user)=>{
+      let user1=user.user
+      this.db.collection("Usuario").doc(user1?.uid).set({
+        uid:user1?.uid,
+         nome:user1?.displayName,
+         email: user1?.email,
+         dataCad: new Date()
+        
+      })
+    }
+    )
 
   }
 
@@ -80,5 +93,34 @@ recoverPassword(email:string){
 getpic(){
   return this.db.collection("FotosLogin").valueChanges()
   }
-  }
+
+getStateUser(){
+return this.afauth.currentUser.then((a)=> {
+    if(a){
+      console.log('false')
+        this.ht.error("você está logado")
+
+      return false
+    }
+    console.log('verdadeiro')
+    return true
+  })
+
+}
+getStateUserlogin(){
+return this.afauth.currentUser.then((a)=> {
+    if(a){
+      console.log(a)
+      console.log('true')
+      return true
+    }console.log(a)
+    console.log('false')
+    this.router.navigate([''])
+    this.ht.error("você não tem acesso")
+    return false
+  })
+
+}
+}
+
 

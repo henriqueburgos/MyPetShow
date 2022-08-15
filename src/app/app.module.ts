@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {  NgbCarousel, NgbCarouselModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {  NgbCarousel, NgbCarouselModule, NgbModule, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastModule } from '@ngneat/hot-toast';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
@@ -40,6 +40,7 @@ AngularFireModule.initializeApp(environment.firebase),
     NgbCarouselModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
+    NgbOffcanvasModule
   
 
 

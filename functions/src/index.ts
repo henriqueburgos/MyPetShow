@@ -74,3 +74,7 @@ export const updatefoto=functions.https.onCall((data) => {
   return admin.auth().updateUser(data.uid, {photoURL: data.photo});
 });
 
+
+export const updateNome=functions.https.onCall((data) => {
+  return admin.auth().updateUser(data.uid, {displayName: data.name});
+});

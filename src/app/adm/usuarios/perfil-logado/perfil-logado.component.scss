@@ -1,0 +1,26 @@
+.form {
+    width: 100%;
+    height: fit-content;
+}
+
+.form-mat {
+    width: 100%;
+}
+.dlex{
+    display: flex;
+    flex-direction: row;
+}
+.cadastro{
+   
+    align-items: center;
+    padding: 2%;
+    margin-top: 3%;
+  }
+  .cadastro1 {
+    background: rgba(255, 255, 255, 0.753);
+  
+    align-items: center;
+    border-radius: 20px;
+    padding: 12px;
+    box-shadow: 1px 1px 18px #888888;
+  }
