@@ -64,3 +64,9 @@ align-items: center;
   display: flex;
   flex-direction: row;
 }
+
+@media (max-width:'770px') {
+  .responsivo{
+    display: none;
+  }
+}

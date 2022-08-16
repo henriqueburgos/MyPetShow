@@ -7,6 +7,7 @@
           <th scope="col">#</th>
           <th scope="col">Comentario</th>
           <th scope="col">Arquivo</th>
+          <th scope="col"  class="responsivo">Responsividade</th>
           <th scope="col">Apagar</th>
         </tr>
       </thead>
@@ -17,15 +18,18 @@
           <td>
             <div class="click">
               <img
-                (click)="clickDialog(ftLogin.url)"
+                (click)="clickDialog(ftLogin)"
                 [src]="ftLogin.url"
                 class="me-2"
                 style="width: 40px; border-radius: 10%"
               />
             </div>
           </td>
+          <td  class="responsivo">
+            {{ ftLogin.responsividade }}
+          </td>
           <td>
-            <button (click)="deletefile(ftLogin.url, ftLogin.uid)" mat-button>
+            <button (click)="deletefile(ftLogin)" mat-button>
               <mat-icon color="warn">delete</mat-icon>
             </button>
           </td>
@@ -56,6 +60,14 @@
                 Comentario invalido
               </mat-error>
             </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Selecione o padrão</mat-label>
+              <mat-select formControlName="mobile">
+                <mat-option value="mobile">Mobile</mat-option>
+                <mat-option value="web">Web</mat-option>
+              </mat-select>
+            </mat-form-field>
+      
           </div>
           <div>
             <input

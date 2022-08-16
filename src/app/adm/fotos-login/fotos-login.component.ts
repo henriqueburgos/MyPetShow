@@ -9,6 +9,7 @@ import { url } from 'inspector';
 import { finalize, Observable, Subscription, takeLast, tap, timestamp } from 'rxjs';
 import { Login } from 'src/app/shared/models/login';
 import { AdmService } from 'src/app/shared/services/adm.service';
+import { DeletarFotoComponent } from './deletar-foto/deletar-foto.component';
 import { FotoInteiraComponent } from './foto-inteira/foto-inteira.component';
 
 @Component({
@@ -28,7 +29,7 @@ export class FotosLoginComponent implements OnInit {
 
   cadastrarFotos= this.fb.group(
     {
-      
+      mobile: ['',[Validators.required]],
       creditos: ['',[Validators.required]]
     }
   )
@@ -65,6 +66,7 @@ classe:string='btn-primary'
     const ref= this.storage.ref(filePath)
    this.storage.upload(filePath,this.imagem).then(a=> a.ref.getDownloadURL().then(url=> {
     let login:Login={
+      responsividade :this.cadastrarFotos.get('mobile')?.value,
       comentario:this.cadastrarFotos.get('creditos')?.value,
       url:url,       
     }
@@ -83,9 +85,18 @@ classe:string='btn-primary'
   )
    )
 }
-deletefile(file:string, uid:string){
-  this.storage.refFromURL(file).delete().subscribe(a=>console.log('deu certo'))
-  this.adm.deletepic(uid)
+deletefile(file:Login){
+  this.dialog.open(DeletarFotoComponent,{width:'80%', height:'80%',data:{
+    ...file
+  }})
+  .afterClosed().subscribe(a=>{
+    if(a){
+  this.storage.refFromURL(file.url).delete().subscribe(a=>console.log('deu certo'))
+  this.adm.deletepic(file.uid!)
+}
+return console.log("tudo bem ")
+}
+)
 }
   ngOnInit(): void {
     this.elemento.nativeElement.ownerDocument.body.style.background='withe'
@@ -103,10 +114,10 @@ console.log(this.fotosLogin$)
     
     this.sub?.unsubscribe()
   }
-clickDialog(url:string){
+clickDialog(arquivo:Login){
   this.dialog.open(FotoInteiraComponent, { maxWidth: '512px',maxHeight:'512px',
     data:{
-      url: url
+      ...arquivo
     }
   }
   )

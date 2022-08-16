@@ -1,10 +1,11 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { resolve } from 'dns';
-import { Subscription, tap } from 'rxjs';
+import { map, Observable, shareReplay, Subscription, tap } from 'rxjs';
 import { Login } from '../shared/models/login';
 import { Usuario } from '../shared/models/usuario';
 import { AuthService } from '../shared/services/auth.service';
@@ -77,7 +78,7 @@ export class AuthComponent implements OnInit {
     onClikgoogle(){
       this.auth.onloginGoogle()
     }
-    constructor(
+    constructor(private breakpointObserver: BreakpointObserver,
       private fb: FormBuilder,
       private auth:AuthService,
       private afAuth:AngularFireAuth,
@@ -88,13 +89,28 @@ export class AuthComponent implements OnInit {
   user?:any
   sub?:Subscription
   sub2?:Subscription
+  sub3?:Subscription
     ngOnInit(): void {
    this.sub=this.auth.getpic().pipe( 
         tap(b=>{
-          let array:any[]=b
-     this.elemento.nativeElement.ownerDocument.body.style.background=`url(${array[(Math.floor(Math.random()*array.length))].url})`
-          this.elemento.nativeElement.ownerDocument.body.style.backgroundSize="cover"
+       if(this.breakpointObserver.isMatched(Breakpoints.Handset)){
+            console.log("caiu aqui")
+          this.sub3=  this.auth.getpicmobile().pipe( 
+              tap( (mobile)=>{
+                console.log("caiu aqui1")
+                let picmobile:Login[]=mobile
+                this.elemento.nativeElement.ownerDocument.body.style.background=`url(${picmobile[(Math.floor(Math.random()*picmobile.length))].url})`
+                this.elemento.nativeElement.ownerDocument.body.style.backgroundSize="auto"
+              })
+           ).subscribe()
+  
+          }else{
+            console.log("ihuapululo");
+            let array:Login[]=b
+            this.elemento.nativeElement.ownerDocument.body.style.background=`url(${array[(Math.floor(Math.random()*array.length))].url})` // AQUI É O PAPEL 
          
+          this.elemento.nativeElement.ownerDocument.body.style.backgroundSize="cover"
+          }
         })
       ).subscribe(a=> this.arrayimg=a)
       
@@ -106,6 +122,7 @@ export class AuthComponent implements OnInit {
     ngOnDestroy(){
       this.sub?.unsubscribe()
       this.sub2?.unsubscribe()
+      this.sub3?.unsubscribe()
       this.elemento.nativeElement.ownerDocument.body.style.background="none"
     }
     errorPassword=0

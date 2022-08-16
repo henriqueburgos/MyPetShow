@@ -7,6 +7,8 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { getApp } from "firebase/app";
 import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
 import { Router } from '@angular/router';
+import { Login } from '../models/login';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: "root",
 })
@@ -91,8 +93,13 @@ recoverPassword(email:string){
 }
 
 getpic(){
-  return this.db.collection("FotosLogin").valueChanges()
-  }
+  return this.db.collection("FotosLogin",a=> a.where("responsividade",'==','Web')).valueChanges()as Observable<Login[]>
+}
+  
+  getpicmobile(){
+    return this.db.collection("FotosLogin",a=> a.where("responsividade",'==','mobile')).valueChanges() as Observable<Login[]>
+    }
+
 
 getStateUser(){
 return this.afauth.currentUser.then((a)=> {
