@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
-  constructor(
+constructor(
     private google:GoogleAuthProvider,
     private afauth: AngularFireAuth,
     private db: AngularFirestore,
@@ -23,11 +23,10 @@ export class AuthService {
 
   ) { }
 
-   functions = getFunctions(getApp());
-   conected= connectFunctionsEmulator(this.functions, "localhost", 5001);
-   
+functions = getFunctions(getApp());
+conected= connectFunctionsEmulator(this.functions, "localhost", 5001);
 
-  onloginGoogle(): void{
+onloginGoogle(): void{
     this.afauth.signInWithPopup(this.google).then(
     (user)=>{
       let user1=user.user
@@ -43,7 +42,7 @@ export class AuthService {
 
   }
 
-  onsubmit(email:string,senha:string, user1:Usuario){
+onsubmit(email:string,senha:string, user1:Usuario){
     return new Promise( ()=>
     this.afauth.createUserWithEmailAndPassword(email,senha).then(
       usuario=> {
@@ -77,12 +76,12 @@ this.ht.error("Email já registrado na aplicação!")
   }
     ))
   }
+
 verifytoken(){
   return this.afauth.authState
     
     
   }
-
 
 onLogin(email:string,senha:string){
  return this.afauth.signInWithEmailAndPassword(email,senha)
@@ -93,13 +92,12 @@ recoverPassword(email:string){
 }
 
 getpic(){
-  return this.db.collection("FotosLogin",a=> a.where("responsividade",'==','Web')).valueChanges()as Observable<Login[]>
+  return this.db.collection("FotosLogin",a=> a.where("responsividade",'==','web')).valueChanges()as Observable<Login[]>
 }
   
-  getpicmobile(){
+getpicmobile(){
     return this.db.collection("FotosLogin",a=> a.where("responsividade",'==','mobile')).valueChanges() as Observable<Login[]>
     }
-
 
 getStateUser(){
 return this.afauth.currentUser.then((a)=> {
@@ -114,6 +112,7 @@ return this.afauth.currentUser.then((a)=> {
   })
 
 }
+
 getStateUserlogin(){
 return this.afauth.currentUser.then((a)=> {
     if(a){

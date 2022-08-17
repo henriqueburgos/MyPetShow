@@ -1,4 +1,5 @@
-<div >
+<div *ngIf="usuario">
+  <img src="{{usuario.photoURL}}" width="100px" height="100px" alt="">
 <button mat-fab color="primary"><mat-icon>add</mat-icon></button>
 </div>
 <div class="centralizar">

@@ -16,14 +16,35 @@ import { AuthService } from '../shared/services/auth.service';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
-
-  
+ 
   tipo!:string;
+  arrayimg?:any[]
+  user?:any
+  sub?:Subscription
+  sub2?:Subscription
+  sub3?:Subscription
+  errorPassword=0
+  block=false
+  progresso1 = 0;
+
+
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private fb: FormBuilder,
+    private auth:AuthService,
+    private afAuth:AngularFireAuth,
+    private ht: HotToastService,
+    private elemento: ElementRef,
+    private router:Router
+  ) {}
+  
+
     image = [
       'https://cdn.pixabay.com/photo/2016/11/14/04/45/elephant-1822636_960_720.jpg',
       'https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg',
       'https://cdn.pixabay.com/photo/2016/10/21/14/46/fox-1758183_960_720.jpg',
     ];
+
     cadastroForm = this.fb.group(
       {
         nome: ['', [Validators.required]],
@@ -34,7 +55,7 @@ export class AuthComponent implements OnInit {
       },
    
     );
-  arrayimg?:any[]
+ 
     loginForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -42,8 +63,7 @@ export class AuthComponent implements OnInit {
       },
    
     );
-   progresso1 = 0;
-    block=false
+
     progresso() {
     this.tipo='dark'
       this.progresso1 = 0;
@@ -55,6 +75,8 @@ export class AuthComponent implements OnInit {
       return  this.progresso1;
     }
   
+
+ 
     onSubmit(){
       let user:Usuario = {... this.cadastroForm.value, dataCad: new Date()}
      console.time('cadastro')
@@ -75,57 +97,7 @@ export class AuthComponent implements OnInit {
   
     }
    
-    onClikgoogle(){
-      this.auth.onloginGoogle()
-    }
-    constructor(private breakpointObserver: BreakpointObserver,
-      private fb: FormBuilder,
-      private auth:AuthService,
-      private afAuth:AngularFireAuth,
-      private ht: HotToastService,
-      private elemento: ElementRef,
-      private router:Router
-    ) {}
-  user?:any
-  sub?:Subscription
-  sub2?:Subscription
-  sub3?:Subscription
-    ngOnInit(): void {
-   this.sub=this.auth.getpic().pipe( 
-        tap(b=>{
-       if(this.breakpointObserver.isMatched(Breakpoints.Handset)){
-            console.log("caiu aqui")
-          this.sub3=  this.auth.getpicmobile().pipe( 
-              tap( (mobile)=>{
-                console.log("caiu aqui1")
-                let picmobile:Login[]=mobile
-                this.elemento.nativeElement.ownerDocument.body.style.background=`url(${picmobile[(Math.floor(Math.random()*picmobile.length))].url})`
-                this.elemento.nativeElement.ownerDocument.body.style.backgroundSize="auto"
-              })
-           ).subscribe()
-  
-          }else{
-            console.log("ihuapululo");
-            let array:Login[]=b
-            this.elemento.nativeElement.ownerDocument.body.style.background=`url(${array[(Math.floor(Math.random()*array.length))].url})` // AQUI É O PAPEL 
-         
-          this.elemento.nativeElement.ownerDocument.body.style.backgroundSize="cover"
-          }
-        })
-      ).subscribe(a=> this.arrayimg=a)
-      
-      
-    this.afAuth.authState.subscribe(a=> this.user=a);
-    this.tipo='dark'
-      
-    }
-    ngOnDestroy(){
-      this.sub?.unsubscribe()
-      this.sub2?.unsubscribe()
-      this.sub3?.unsubscribe()
-      this.elemento.nativeElement.ownerDocument.body.style.background="none"
-    }
-    errorPassword=0
+
 
     login(){
       let email = this.loginForm.get('email')?.value;
@@ -189,7 +161,50 @@ export class AuthComponent implements OnInit {
       this.auth.recoverPassword(this.loginForm.get('email')?.value)
     }
 
- 
+    onClikgoogle(){
+      this.auth.onloginGoogle()
+    }
+
+  
+    ngOnInit(): void {
+      this.sub=this.auth.getpic().pipe( 
+           tap(b=>{
+          if(this.breakpointObserver.isMatched(Breakpoints.Handset)){
+               console.log("caiu aqui")
+             this.sub3=  this.auth.getpicmobile().pipe( 
+                 tap( (mobile)=>{
+                   console.log("caiu aqui1")
+                   let picmobile:Login[]=mobile
+                   this.elemento.nativeElement.ownerDocument.body.style.background=`url(${picmobile[(Math.floor(Math.random()*picmobile.length))].url})`
+                   this.elemento.nativeElement.ownerDocument.body.style.backgroundSize="auto"
+                 })
+              ).subscribe()
+     
+             }else{
+               console.log("ihuapululo");
+               let array:Login[]=b
+               this.elemento.nativeElement.ownerDocument.body.style.background=`url(${array[(Math.floor(Math.random()*array.length))].url})` // AQUI É O PAPEL 
+            
+             this.elemento.nativeElement.ownerDocument.body.style.backgroundSize="cover"
+             }
+           })
+         ).subscribe(a=> this.arrayimg=a)
+         
+         
+       this.afAuth.authState.subscribe(a=> this.user=a);
+       this.tipo='dark'
+         
+       }
+
+
+    ngOnDestroy(){
+         this.sub?.unsubscribe()
+         this.sub2?.unsubscribe()
+         this.sub3?.unsubscribe()
+         this.elemento.nativeElement.ownerDocument.body.style.background="none"
+       }
+       
+   
 
   }
   

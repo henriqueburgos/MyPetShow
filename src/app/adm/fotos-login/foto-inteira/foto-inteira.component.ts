@@ -10,11 +10,15 @@ import { FotosLoginComponent } from '../fotos-login.component';
   styleUrls: ['./foto-inteira.component.scss']
 })
 export class FotoInteiraComponent implements OnInit {
+  
 data2?:any
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: Login,private ref: MatDialogRef<FotosLoginComponent>) {}
+
   clicarfechar(){
 this.ref.close()
   }
+
   ngOnInit(): void {
 this.data2=this.data
   }

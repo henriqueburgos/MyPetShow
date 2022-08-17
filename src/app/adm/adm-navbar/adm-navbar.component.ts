@@ -15,15 +15,19 @@ import { AdmService } from 'src/app/shared/services/adm.service';
 export class AdmNavbarComponent implements OnInit {
 user?:any
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
       map(result => result.matches),
       shareReplay()
     );
 
 
-  constructor(private breakpointObserver: BreakpointObserver,private adm : AdmService, 
-    private router:Router, private afauth:AngularFireAuth) { }
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private adm : AdmService, 
+    private router:Router,
+    private afauth:AngularFireAuth,
+    ) { }
+
 logout(){
   this.adm.logout().then(()=>this.router.navigate(['']))
 }
