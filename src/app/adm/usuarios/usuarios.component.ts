@@ -10,59 +10,64 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.scss']
+  styleUrls: ['./usuarios.component.scss'],
 })
 export class UsuariosComponent implements OnInit {
-usuarios$?:any
+  usuarios$?: any;
+  token?: {};
+  sub?: Subscription;
+
   constructor(
     private adm: AdmService,
-    private ht :HotToastService, 
-    private dialog: MatDialog,
-    ) { }
+    private ht: HotToastService,
+    private dialog: MatDialog
+  ) {}
 
-deleteUser(uid:Usuario){
-  this.dialog.open(DeleteUserComponent,{width:'80%', height:'80%',data:{
-    ...uid
-  }})
-  .afterClosed().subscribe(a=>{
-    if(a){
-      this.ht.success("usuario deletado com sucesso")
-      return this.adm.deleteUser(uid)
-    }
-    return console.log("tudo bem ")
-  })
+  deleteUser(uid: Usuario) {
+    this.dialog
+      .open(DeleteUserComponent, {
+        width: '80%',
+        height: '80%',
+        data: {
+          ...uid,
+        },
+      })
+      .afterClosed()
+      .subscribe((a) => {
+        if (a) {
+          this.ht.success('usuario deletado com sucesso');
+          return this.adm.deleteUser(uid);
+        }
+        return console.log('tudo bem ');
+      });
+  }
+  setAdmin(uid: Usuario) {
+    return this.adm.setAdmin(uid);
+  }
 
+  getToken(uid: Usuario) {
+    this.adm.getToken(uid).subscribe((a) => {
+      this.token = a;
+      this.dialog.open(DadosUserComponent, {
+        width: '90%',
+        height: '90%',
+        data: { token: this.token },
+      });
+    });
+  }
 
-}
-setAdmin(uid:Usuario){
-return this.adm.setAdmin(uid);
-}
-token?:{}
-getToken(uid:Usuario){
- 
-  this.adm.getToken(uid).subscribe(
-    (a)=>{
-      this.token=a
-      this.dialog.open(DadosUserComponent,{ width:'90%', height:'90%',data:{token:this.token}})
-    }
-  )
-
- }
-
-sub?:Subscription
   ngOnInit(): void {
-  
- this.sub= this.adm.getUser().pipe(
-    tap(
-      (resposta)=>{
-        this.usuarios$= resposta
-console.log(this.usuarios$)
-      }
-    )
-  ).subscribe()
-
-}
-ngOndestroy(){
-  this.sub?.unsubscribe()
-}
+    this.sub = this.adm
+      .getUser()
+      .pipe(
+        tap((resposta) => {
+          this.usuarios$ = resposta;
+          console.log(this.usuarios$);
+        })
+      )
+      .subscribe();
+  }
+  ngOndestroy() {
+    this.sub?.unsubscribe();
+  }
 }

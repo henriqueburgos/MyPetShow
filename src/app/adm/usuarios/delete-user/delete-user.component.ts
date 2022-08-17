@@ -6,18 +6,19 @@ import { UsuariosComponent } from '../usuarios.component';
 @Component({
   selector: 'app-delete-user',
   templateUrl: './delete-user.component.html',
-  styleUrls: ['./delete-user.component.scss']
+  styleUrls: ['./delete-user.component.scss'],
 })
 export class DeleteUserComponent implements OnInit {
-  clicarfechar(){
-    this.ref.close()
-      }
-  clicardeletar(){
-        this.ref.close(true)
-          }
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Usuario, private ref: MatDialogRef<UsuariosComponent>) { }
-
-  ngOnInit(): void {
+  clicarfechar() {
+    this.ref.close();
   }
+  clicardeletar() {
+    this.ref.close(true);
+  }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: Usuario,
+    private ref: MatDialogRef<UsuariosComponent>
+  ) {}
 
+  ngOnInit(): void {}
 }

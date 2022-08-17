@@ -19,8 +19,11 @@ export class NavbarUsuarioComponent {
     );
 
 
-  constructor(private breakpointObserver: BreakpointObserver,private adm : AdmService, 
-    private router:Router) { }
+constructor(
+  private breakpointObserver: BreakpointObserver,
+  private adm : AdmService, 
+    private router:Router,
+    ) { }
 logout(){
   this.adm.logout().then(()=>this.router.navigate(['']))
 }

@@ -14,6 +14,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { DeleteUserComponent } from './usuarios/delete-user/delete-user.component';
 import { DadosUserComponent } from './usuarios/dados-user/dados-user.component';
 import { PerfilLogadoComponent } from './usuarios/perfil-logado/perfil-logado.component';
+import { DeletarFotoComponent } from './fotos-login/deletar-foto/deletar-foto.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { PerfilLogadoComponent } from './usuarios/perfil-logado/perfil-logado.co
     UsuariosComponent,
     DeleteUserComponent,
     DadosUserComponent,
-    PerfilLogadoComponent
+    PerfilLogadoComponent,
+    DeletarFotoComponent
   ],
   imports: [
     CommonModule,

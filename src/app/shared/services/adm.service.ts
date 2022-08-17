@@ -28,7 +28,7 @@ export class AdmService {
     return this.db.collection('Usuario').doc(uid).update({ photoURL:string})
    }
    getpic(){
-    return this.db.collection("FotosLogin").valueChanges()
+    return this.db.collection("FotosLogin", a=> a.orderBy('responsividade')).valueChanges()
     }
     
 
